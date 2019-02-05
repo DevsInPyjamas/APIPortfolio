@@ -20,7 +20,7 @@ class Project(models.Model):
     """
     name = models.CharField(max_length=100, blank=False)
     description = models.TextField()
-    image_url = models.ImageField(upload_to=str(name)+'_images', default='/media/')
+    image_url = models.ImageField(upload_to='front_images', default='/media/')
     date_added = models.DateField(auto_now_add=True)
     project_tags = models.ManyToManyField(Tag)
 
@@ -61,7 +61,7 @@ class Screenshot(models.Model):
         Model class for Screenshot table
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='screenshots_reference')
-    image = models.ImageField(upload_to=str(project.name)+'_images/screenshots', default='/media/')
+    image = models.ImageField(upload_to='screenshots', default='/media/')
 
     def __str__(self):
         return self.project.name + '_' + str(self.id)
