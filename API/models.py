@@ -20,7 +20,7 @@ class Project(models.Model):
     """
     name = models.CharField(max_length=100, blank=False)
     description = models.TextField()
-    image_url = models.ImageField(upload_to='', default='/media/')
+    image_url = models.ImageField(upload_to=str(name)+'_images', default='/media/')
     date_added = models.DateField(auto_now_add=True)
     project_tags = models.ManyToManyField(Tag)
 
@@ -49,7 +49,7 @@ class Link(models.Model):
         (WEB, 'WEBPAGE')
     )
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='links')
-    link = models.CharField(max_length=150)
+    link = models.URLField(max_length=150, blank=False)
     link_type = models.CharField(max_length=2, choices=LINK_TYPE_CHOICES, default=GITHUB)
 
     def __str__(self):
@@ -61,7 +61,7 @@ class Screenshot(models.Model):
         Model class for Screenshot table
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='screenshots_reference')
-    image = models.ImageField(upload_to='project_images/screenshots', default='/media/')
+    image = models.ImageField(upload_to=str(project.name)+'_images/screenshots', default='/media/')
 
     def __str__(self):
         return self.project.name + '_' + str(self.id)
