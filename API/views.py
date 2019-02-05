@@ -60,3 +60,32 @@ def tag(request):
             return tag_selected.to_dict()
     error_str = {'error': 'BAD REQUEST: There is no tags with that id.'}
     return HttpResponseBadRequest(json.dumps(error_str))
+
+
+@cross_origin
+@returns_http_query
+def all_contributions(request):
+    """
+    The mighty power of all fucking projects serialized into a json
+    :param request: the request
+    :return: all the projects serialized into a json
+    """
+    return {"result": [p.to_dict() for p in models.ProjectContrib.objects.all()]}
+
+
+@cross_origin
+@returns_http_query
+def contribution(request):
+    """
+    The mighty power of one fucking project serialized into a json. The request should have an id
+    if not, returns a bad request
+    :param request: the request
+    :return: the project serialized into a json
+    """
+    if request.method == 'GET' and 'id' in request.GET:
+        id_project = request.GET['id']
+        project_selected = models.ProjectContrib.objects.filter(id=id_project).first()
+        if project_selected is not None:
+            return project_selected.to_dict()
+    error_str = {'error': 'BAD REQUEST: There is no contributions with that id.'}
+    return HttpResponseBadRequest(json.dumps(error_str))
