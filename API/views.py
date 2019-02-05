@@ -1,6 +1,5 @@
 import json
 
-from django.core.paginator import Paginator
 from django.http import HttpResponseBadRequest
 from API.decorators import cross_origin, returns_http_query
 from API import models
@@ -14,12 +13,6 @@ def all_projects(request):
     :param request: the request
     :return: all the projects serialized into a json
     """
-    max_elements = 10
-    if request.method == 'GET' and 'count' in request.GET:
-        max_elements = request.GET['count']
-    query = models.Project.objects.filter()
-    paginator = Paginator(query, max_elements)
-    page
     return {"result": [p.to_dict() for p in models.Project.objects.all()]}
 
 
