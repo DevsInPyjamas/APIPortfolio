@@ -15,7 +15,7 @@ def cross_origin(func):
     return cross_origin_decorator
 
 
-def returns_json(func):
+def returns_http_query(func):
     def returns_json_decorator(request):
         response = func(request)
         if isinstance(response, HttpResponse):
