@@ -106,3 +106,4 @@ ENV/
 *.db
 .idea/
 *.sqlite3
+APIPortfolio/SECRETS.py
