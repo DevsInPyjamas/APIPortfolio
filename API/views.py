@@ -1,4 +1,4 @@
-from API import cross_origin, returns_json
+from API.decorators import cross_origin, returns_json
 
 
 @cross_origin
