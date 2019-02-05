@@ -6,4 +6,6 @@ from API import views
 urlpatterns = [
     url(r'^projects$', views.all_projects, name='All Projects'),
     url(r'^project$', views.project, name='One Project'),
+    url(r'^tags$', views.all_tags, name='All Tags'),
+    url(r'^tag$', views.tag, name='One Tag'),
 ]

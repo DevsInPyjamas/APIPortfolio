@@ -20,7 +20,7 @@ class Project(models.Model):
     """
     name = models.CharField(max_length=100, blank=False)
     description = models.TextField()
-    image_url = models.ImageField(upload_to='front_images', default='/media/')
+    image = models.ImageField(upload_to='front_images', default='/media/')
     date_added = models.DateField(auto_now_add=True)
     project_tags = models.ManyToManyField(Tag)
 
@@ -34,8 +34,9 @@ class Project(models.Model):
             links.append(link.to_dict())
         for screenshot in Screenshot.objects.filter(project=self.id):
             screenshots.append(screenshot.to_dict())
-        return {'name': self.name, 'description': self.description, 'image_url': self.image_url,
-                'date_added': self.date_added, 'links': links, 'screenshots': screenshots, 'project_tags': project_tags}
+        return {'id': self.id, 'name': self.name, 'description': self.description, 'image_url': self.image.url,
+                'date_added': str(self.date_added), 'links': links, 'screenshots': screenshots,
+                'project_tags': project_tags}
 
     def __str__(self):
         return self.name
@@ -83,7 +84,7 @@ class Screenshot(models.Model):
     image = models.ImageField(upload_to='screenshots', default='/media/')
 
     def to_dict(self):
-        return {'id': self.id, 'screenshot_url': self.image}
+        return {'id': self.id, 'screenshot_url': str(self.image.url)}
 
     def __str__(self):
         return self.project.name + '_' + str(self.id)
