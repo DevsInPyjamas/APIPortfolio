@@ -21,7 +21,7 @@ def returns_json(func):
         if isinstance(response, HttpResponse):
             response['Content-Type'] = 'application/json; charset=utf-8'
         else:
-            response = HttpResponse(json.dumps(response))
+            response = HttpResponse(response)
             response['Content-Type'] = 'application/json; charset=utf-8'
         return response
 

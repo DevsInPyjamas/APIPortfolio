@@ -107,3 +107,5 @@ ENV/
 .idea/
 *.sqlite3
 APIPortfolio/SECRETS.py
+migrations/
+media/
