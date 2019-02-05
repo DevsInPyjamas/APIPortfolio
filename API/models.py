@@ -24,6 +24,19 @@ class Project(models.Model):
     date_added = models.DateField(auto_now_add=True)
     project_tags = models.ManyToManyField(Tag)
 
+    def to_dict(self):
+        project_tags = []
+        links = []
+        screenshots = []
+        for tag in Tag.objects.filter(self.id):
+            project_tags.append(tag.to_dict())
+        for link in Link.objects.filter(self.id):
+            links.append(link.to_dict())
+        for screenshot in Screenshot.objects.filter(self.id):
+            screenshots.append(screenshot.to_dict())
+        return {'name': self.name, 'description': self.description, 'image_url': self.image_url,
+                'date_added': self.date_added, 'links': links, 'screenshots': screenshots, 'project_tags': project_tags}
+
     def __str__(self):
         return self.name
 
@@ -32,6 +45,9 @@ class ProjectContrib(Project):
     """
         Model class for contributed project table
     """
+    def to_dict(self):
+        super(ProjectContrib, self).to_dict()
+
     def __str__(self):
         return self.name
 
@@ -52,6 +68,9 @@ class Link(models.Model):
     link = models.URLField(max_length=150, blank=False)
     link_type = models.CharField(max_length=2, choices=LINK_TYPE_CHOICES, default=GITHUB)
 
+    def to_dict(self):
+        return {'id': self.id, 'link_type': self.link_type, 'link': self.link}
+
     def __str__(self):
         return self.project.name + ': ' + self.link_type
 
@@ -62,6 +81,9 @@ class Screenshot(models.Model):
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='screenshots_reference')
     image = models.ImageField(upload_to='screenshots', default='/media/')
+
+    def to_dict(self):
+        return {'id': self.id, 'screenshot_url': self.image}
 
     def __str__(self):
         return self.project.name + '_' + str(self.id)
