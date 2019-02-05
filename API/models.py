@@ -28,11 +28,11 @@ class Project(models.Model):
         project_tags = []
         links = []
         screenshots = []
-        for tag in Tag.objects.filter(self.id):
+        for tag in Tag.objects.filter(project=self.id):
             project_tags.append(tag.to_dict())
-        for link in Link.objects.filter(self.id):
+        for link in Link.objects.filter(project=self.id):
             links.append(link.to_dict())
-        for screenshot in Screenshot.objects.filter(self.id):
+        for screenshot in Screenshot.objects.filter(project=self.id):
             screenshots.append(screenshot.to_dict())
         return {'name': self.name, 'description': self.description, 'image_url': self.image_url,
                 'date_added': self.date_added, 'links': links, 'screenshots': screenshots, 'project_tags': project_tags}
